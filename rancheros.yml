@@ -1,0 +1,35 @@
+#cloud-config
+hostname: rancher
+ssh_authorized_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+  
+runcmd:
+  - echo "true" > /home/rancher/provisioned
+  
+rancher:
+  network:
+    dns:
+      nameservers:
+        - 10.60.0.1
+        - 1.1.1.1
+      override: true # Override DHCP assigned nameservers
+    interfaces:
+      eth0:
+        dhcp: false
+        address: 10.60.0.16/24
+        gateway: 10.60.0.1
+        mtu: 1500
+
+        #   services:
+        #     rancher2:
+        #       image: rancher/rancher
+        #       restart: unless-stopped
+        #       ports:
+        #         - "80:80"
+        #         - "443:443"
+        #       labels:
+        #         io.rancher.os.scope: system # Remove to run in User Docker
+
+  sysctl:
+    vm.max_map_count: 262144

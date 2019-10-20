@@ -1,0 +1,8 @@
+#cloud-config
+ssh_authorized_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+  
+rancher:
+  sysctl:
+    vm.max_map_count: 262144
