@@ -1,0 +1,49 @@
+#cloud-config
+# vim: syntax=yaml
+#
+
+hostname: rpi
+
+ssh_authorized_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+
+resize_rootfs: true
+growpart:
+    mode: auto
+    devices: ["/"]
+    ignore_growroot_disabled: false
+
+users:
+  - name: kradalby
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: users,docker,video
+    plain_text_passwd: kradalby
+    lock_passwd: false
+    ssh_pwauth: true
+    ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+    chpasswd: { expire: false }
+  - name: ubuntu
+    inactive: true
+
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+  - ntp
+  - vim
+
+locale: "en_US.UTF-8"
+timezone: "Europe/London"
+
+write_files:
+    - path: "/etc/docker/daemon.json"
+      owner: "root:root"
+      content: |
+        {
+          "labels": [ "os=linux", "arch=arm64" ],
+          "experimental": true
+        }
