@@ -1,18 +1,21 @@
 #cloud-config
 # vim: syntax=yaml
 #
+# For initialisation of a fresh Pi:
+# Add to "user-data" on boot partition
+#
 
-hostname: rpi
+hostname: rpi1
 
 ssh_authorized_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
 
 resize_rootfs: true
 growpart:
-    mode: auto
-    devices: ["/"]
-    ignore_growroot_disabled: false
+  mode: auto
+  devices: ["/"]
+  ignore_growroot_disabled: false
 
 users:
   - name: kradalby
@@ -23,8 +26,8 @@ users:
     lock_passwd: false
     ssh_pwauth: true
     ssh_authorized_keys:
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
-        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
     chpasswd: { expire: false }
   - name: ubuntu
     inactive: true
@@ -38,12 +41,11 @@ packages:
 
 locale: "en_US.UTF-8"
 timezone: "Europe/London"
-
-write_files:
-    - path: "/etc/docker/daemon.json"
-      owner: "root:root"
-      content: |
-        {
-          "labels": [ "os=linux", "arch=arm64" ],
-          "experimental": true
-        }
+# write_files:
+#     - path: "/etc/docker/daemon.json"
+#       owner: "root:root"
+#       content: |
+#         {
+#           "labels": [ "os=linux", "arch=arm64" ],
+#           "experimental": true
+#         }
