@@ -7,9 +7,16 @@
 
 hostname: rpi1
 
+disable_root: false
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
+write_files:
+  - path: "/etc/ssh/sshd_config.d/permit_root"
+    owner: "root:root"
+    permissions: "0644"
+    content: |
+      PermitRootLogin without-password
 
 resize_rootfs: true
 growpart:
@@ -29,6 +36,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBV4ZjlUvRDs70qHD/Ldi6OTkFpDEFgfbXbqSnaL2Qup
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMCZOutN9LIpx5mIgJVbyEbURzurA8IUdBm2V7aXD33D
     chpasswd: { expire: false }
+    inactive: true
   - name: ubuntu
     inactive: true
 
@@ -41,11 +49,3 @@ packages:
 
 locale: "en_US.UTF-8"
 timezone: "Europe/London"
-# write_files:
-#     - path: "/etc/docker/daemon.json"
-#       owner: "root:root"
-#       content: |
-#         {
-#           "labels": [ "os=linux", "arch=arm64" ],
-#           "experimental": true
-#         }
